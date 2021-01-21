@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas></canvas>
+  </body>
+  <script>
+    function draw() {
+      let canvas = document.querySelector("canvas");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      if (canvas.getContext) {
+        let color = "#ffffff";
+        let ctx = canvas.getContext("2d");
+        ctx.fillRect(25, 25, 100, 100);
+        ctx.clearRect(45, 45, 60, 60);
+        ctx.strokeRect(50, 50, 50, 50);
+
+        ctx.beginPath();
+        ctx.moveTo(500, 500);
+        ctx.lineTo(375, 300);
+        ctx.lineTo(425, 250);
+        ctx.lineTo(575, 250);
+        ctx.lineTo(625, 300);
+        ctx.lineTo(500, 500);
+        ctx.lineTo(425, 300);
+        ctx.lineTo(450, 250);
+        ctx.lineTo(550, 250);
+        ctx.lineTo(575, 300);
+        ctx.lineTo(500, 500);
+        ctx.lineTo(375, 300);
+        ctx.lineTo(625, 300);
+        ctx.fill();
+        ctx.stroke(color);
+      }
+    }
+
+    draw();
+
+    /* /////////////////////ANIMATION__BOUNCE//////////////
+
+    function animate(options) {
+
+        var start = performance.now();
+
+        requestAnimationFrame(function animate(time) {
+            // timeFraction от 0 до 1
+            var timeFraction = (time - start) / options.duration;
+            if (timeFraction > 1) timeFraction = 1;
+
+            // текущее состояние анимации
+            var progress = options.timing(timeFraction)
+
+            options.draw(progress);
+
+            if (timeFraction < 1) {
+                requestAnimationFrame(animate);
+            }
+
+        });
+    }
+
+    let ball = document.getElementById('ball');
+    let field = document.getElementById('field');
+
+    function makeEaseOut(timing) {
+        return function(timeFraction) {
+            return 1 - timing(1 - timeFraction);
+        }
+    }
+
+    function bounce(timeFraction) {
+        for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+            if (timeFraction >= (7 - 4 * a) / 11) {
+                return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+            }
+        }
+    }
+    ball.onclick = function () {
+
+        let to = field.clientHeight - ball.clientHeight;
+
+        animate({
+            duration: 2000,
+            timing: makeEaseOut(bounce),
+            draw(progress) {
+                ball.style.top = to * progress + 'px';
+            }
+        });
+    };
+*/
+
+    /*
+
+    let clickBtn = document.querySelector('.btn-form');
+    let form = document.getElementById('prompt-form');
+    let formWrapper = document.getElementById('prompt-form-container');
+
+    clickBtn.addEventListener('click', function (e) {
+        let target = e.target;
+
+        if (!target) return;
+
+        form.style.display = 'inline-block';
+        clickBtn.style.display = 'none';
+        formWrapper.style.backgroundColor = '#cccccc';
+
+        let value = form.text.value;
+
+
+    })
+*/
+
+    /* let form = document.forms.calculator;
+
+    function initSec(e){
+
+        let initial = form.money.value;
+        let months = form.months.value;
+        let interest = form.interest.value * 0.01;
+        let years = months / 12;
+
+        let moneyBefore = document.getElementById('money-before');
+        let moneyAfter = document.getElementById('money-after');
+        let diagramGreen = document.getElementById('height-after');
+
+        let result = Math.round(initial * (1 + interest * years));
+
+        moneyBefore.innerHTML = initial;
+        moneyAfter.innerHTML = result;
+        diagramGreen.style.height = (100 * result) / initial + 'px';
+
+        console.log(months);
+        console.log(years);
+        console.log(result);
+    }
+
+    initSec();
+    form.addEventListener('input', initSec);
+*/
+
+    /*
+    let mouse = document.getElementById('mouse');
+
+    mouse.addEventListener('click', function (e) {
+
+        this.style.left = mouse.getBoundingClientRect().left + 'px';
+        this.style.top = mouse.getBoundingClientRect().top + 'px';
+        this.style.position = 'fixed';
+
+        this.focus();
+
+        this.addEventListener('keydown', function keyPress(e) {
+            let shiftX = mouse.offsetWidth;
+            let shiftY = mouse.offsetHeight;
+
+            switch (e.key){
+                case 'ArrowLeft':
+                    this.style.left = parseInt(this.style.left) - shiftX + 'px';
+                    console.log(mouse.style.left);
+                    return false;
+                case 'ArrowRight':
+                    this.style.left = parseInt(this.style.left) + shiftX + 'px';
+                    console.log(mouse.style.left);
+                    return false;
+                case 'ArrowUp':
+                    this.style.top = parseInt(this.style.top) - shiftY + 'px';
+                    console.log(mouse.style.top);
+                    return false;
+                case 'ArrowDown':
+                    this.style.top = parseInt(this.style.top) + shiftY + 'px';
+                    console.log(mouse.style.top);
+                    return false;
+            }
+        })
+    })
+*/
+
+    /*
+    let table = document.getElementById('bagua-table');
+    let editingTd;
+
+    table.addEventListener('click', function (event) {
+        let target = event.target.closest('.edit-cancel,.edit-ok,td');
+
+        makeTdEditable(target);
+    })
+
+    function makeTdEditable(td) {
+        editingTd = {
+            elem: td,
+            data: td.innerHTML
+        };
+
+        td.classList.add('edit-td'); // td в состоянии редактирования, CSS применятся к textarea внутри ячейки
+
+        let textArea = document.createElement('textarea');
+        textArea.style.width = td.clientWidth + 'px';
+        textArea.style.height = td.clientHeight + 'px';
+        textArea.className = 'edit-area';
+
+        textArea.value = td.innerHTML;
+        td.innerHTML = '';
+        td.appendChild(textArea);
+        textArea.focus();
+
+        td.insertAdjacentHTML("beforeEnd",
+            '<div class="edit-controls"><button class="edit-ok">OK</button><button class="edit-cancel">CANCEL</button></div>'
+        );
+    }
+*/
+
+    /*
+let table = document.getElementById('');
+
+col.addEventListener('click', function (e) {
+    let textArea = document.createElement('textarea');
+    textArea.className = 'edit-area';
+    textarea.value = col.innerHTML;
+    col.replaceWith(textarea);
+
+
+    textarea.addEventListener('keydown', function (e) {
+        if (e.key == 'Enter') end();
+    })
+    textarea.addEventListener('blur', function () {
+        end();
+    })
+
+    function end() {
+        col.innerHTML = textarea.value;
+        textarea.replaceWith(col);
+    }
+
+*/
+
+    /*
+        let wrapper = document.getElementById('view');
+        let textarea = document.createElement('textarea')
+        textarea.className = 'edit';
+
+        wrapper.addEventListener('click', function (e) {
+            textarea.value = wrapper.innerHTML;
+            wrapper.replaceWith(textarea);
+
+
+            textarea.addEventListener('blur', function () {
+                end();
+            })
+
+            textarea.addEventListener('keydown', function (e) {
+                if (e.key == 'Enter') end();
+            })
+
+            function end() {
+                wrapper.innerHTML = textarea.value;
+                textarea.replaceWith(wrapper);
+            }
+
+            textarea.focus();
+        })
+    */
+
+    /*let imgLoad = document.querySelectorAll('img');
+
+    function isVisible(elem) {
+        let coords = elem.getBoundingClientRect();
+
+      let windowHeight = document.documentElement.clientHeight;
+
+      let topVisible = coords.top > 0 && coords.top < windowHeight;
+      let bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+
+      return topVisible || bottomVisible;
+    }
+
+    function showVisible(elem) {
+
+        for (let img of imgLoad) {
+
+            let imageSrc = img.dataset.src;
+            if (!imageSrc) continue;
+
+            if (isVisible(img)) {
+                imageSrc += '?nocache=' + Math.random();
+                img.src = imageSrc;
+                img.dataset.src = '';
+            }
+        }
+    }
+
+    showVisible();
+    document.addEventListener('scroll', showVisible);
+*/
+
+    /*
+        let arrow = document.getElementById('arrowTop')
+
+        window.addEventListener('scroll', function (e) {
+            arrow.hidden = (pageYOffset < document.documentElement.clientHeight);
+
+        })
+        arrow.addEventListener('click', function (e) {
+            if (e.target) window.scrollTo(pageYOffset, 0);
+        })
+    */
+  </script>
+</html>

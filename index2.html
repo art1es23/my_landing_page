@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+
+    <style>
+      .slider {
+        border-radius: 5px;
+        background: #e0e0e0;
+        background: linear-gradient(left top, #e0e0e0, #eeeeee);
+        width: 310px;
+        height: 15px;
+        margin: 5px;
+        position: relative;
+      }
+
+      .thumb {
+        width: 10px;
+        height: 25px;
+        border-radius: 3px;
+        position: relative;
+        left: 10px;
+        top: -5px;
+        background: blue;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+/////////////////SLIDER//////////////
+<p><img id="largeImg" src="https://en.js.cx/gallery/img1-lg.jpg" alt="Large image"></p>
+
+<ul id="thumbs">
+    &lt;!&ndash; браузер показывает небольшую встроенную подсказку из атрибута "title" при наведении курсора на текст &ndash;&gt;
+    <li>
+        <a href="https://en.js.cx/gallery/img2-lg.jpg" title="Image 2"><img src="https://en.js.cx/gallery/img2-thumb.jpg"></a>
+    </li>
+    <li>
+        <a href="https://en.js.cx/gallery/img3-lg.jpg" title="Image 3"><img src="https://en.js.cx/gallery/img3-thumb.jpg"></a>
+    </li>
+    <li>
+        <a href="https://en.js.cx/gallery/img4-lg.jpg" title="Image 4"><img src="https://en.js.cx/gallery/img4-thumb.jpg"></a>
+    </li>
+    <li>
+        <a href="https://en.js.cx/gallery/img5-lg.jpg" title="Image 5"><img src="https://en.js.cx/gallery/img5-thumb.jpg"></a>
+    </li>
+    <li>
+        <a href="https://en.js.cx/gallery/img6-lg.jpg" title="Image 6"><img src="https://en.js.cx/gallery/img6-thumb.jpg"></a>
+    </li>
+</ul>-->
+
+    <div id="slider" class="slider">
+      <div class="thumb"></div>
+    </div>
+
+    <script>
+      document.addEventListener("mousedown", (event) => {
+        const draggableElement = event.target.closest(".draggable");
+
+        if (!draggableElement) return;
+
+        const draggableElementHeight = draggableElement.offsetHeight;
+        const draggableElementWidth = draggableElement.offsetWidth;
+
+        const windowHeight = document.documentElement.clientHeight;
+        const windowWidth = document.documentElement.clientWidth;
+
+        const scrollAmount = 5;
+
+        event.preventDefault();
+        document.ondragstart = function () {
+          return false;
+        };
+
+        const clickShiftX =
+          event.clientX - draggableElement.getBoundingClientRect().left;
+        const clickShiftY =
+          event.clientY - draggableElement.getBoundingClientRect().top;
+
+        draggableElement.style.position = "fixed";
+
+        moveAt(event.clientX, event.clientY);
+
+        function moveAt(eventX, eventY) {
+          let newLeft = eventX - clickShiftX;
+          let newTop = eventY - clickShiftY;
+          let newBottom = newTop + draggableElementHeight;
+
+          /* check window bottom border */
+          if (newBottom > windowHeight) {
+            window.scrollBy(0, scrollAmount);
+            newTop = Math.min(newTop, windowHeight - draggableElementHeight);
+          }
+
+          /* check window top border */
+          if (newTop < 0) {
+            window.scrollBy(0, -scrollAmount);
+            newTop = Math.max(newTop, 0);
+          }
+
+          /* check window left border */
+          if (newLeft < 0) newLeft = 0;
+
+          /* check window right border */
+          if (newLeft > windowWidth - draggableElementWidth) {
+            newLeft = windowWidth - draggableElementWidth;
+          }
+
+          /* set draggableElement element position */
+          draggableElement.style.left = newLeft + "px";
+          draggableElement.style.top = newTop + "px";
+        }
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+
+        function onMouseMove(event) {
+          moveAt(event.clientX, event.clientY);
+        }
+
+        function onMouseUp(event) {
+          draggableElement.style.top =
+            parseInt(draggableElement.style.top) + pageYOffset + "px";
+          draggableElement.style.position = "absolute";
+
+          document.removeEventListener("mousemove", onMouseMove);
+          document.removeEventListener("mouseup", onMouseUp);
+        }
+      });
+
+      /*
+    //////////////SLIDER_JS_EVENT_HREF////////////
+
+    thumbs.onclick = function(event) {
+        let thumbnail = event.target.closest('a');
+
+        if (!thumbnail) return;
+        showThumbnail(thumbnail.href, thumbnail.title);
+        event.preventDefault();
+    }
+
+    function showThumbnail(href, title) {
+        largeImg.src = href;
+        largeImg.alt = title;
+    }*/
+
+      /*
+
+    ////////////////////TOGGLE__MENU///////////////////
+
+    for (let li of tree.querySelectorAll('li')) {
+        let span = document.createElement('span');
+        li.prepend(span);
+        span.append(span.nextSibling); // поместить текстовый узел внутрь элемента <span>
+    }
+
+    //  ловим клики на всём дереве
+    tree.onclick = function(event) {
+
+        if (event.target.tagName != 'SPAN') {
+            return;
+        }
+
+        let childrenContainer = event.target.parentNode.querySelector('ul');
+        if (!childrenContainer) return; // нет детей
+
+        childrenContainer.hidden = !childrenContainer.hidden;
+    }
+*/
+
+      /*document.getElementById('tree').addEventListener('click', function (event) {
+        let id = event.target.dataset.toggleId;
+        if (!id) return;
+
+        let elem = document.getElementById(id);
+
+        elem.hidden = !elem.hidden;
+    })*/
+    </script>
+  </body>
+</html>
